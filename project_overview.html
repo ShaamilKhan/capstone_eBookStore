@@ -1,0 +1,477 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>E-Bookstore Capstone — Technical Presentation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #f7f8fa;
+  }
+  .page { max-width: 760px; margin: 0 auto; background: #fff; }
+
+  /* Cover */
+  .cover {
+    background: #1e3a5f;
+    color: #fff;
+    padding: 56px 48px 48px;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #a8c8ff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .cover h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 10px; color: #fff; }
+  .cover p { font-size: 15px; color: #a8c8ff; max-width: 480px; margin-bottom: 32px; }
+  .cover-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: rgba(255,255,255,0.12);
+    color: #cde3ff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* Sections */
+  section { padding: 40px 48px; border-bottom: 1px solid #e5e7eb; }
+  section:last-of-type { border-bottom: none; }
+  .section-num { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #3b82d4; margin-bottom: 6px; }
+  h2 { font-size: 22px; font-weight: 700; color: #1f2328; margin-bottom: 20px; }
+  h3 { font-size: 14px; font-weight: 700; color: #1f2328; margin-bottom: 8px; margin-top: 20px; }
+  h3:first-child { margin-top: 0; }
+  p { color: #57606a; margin-bottom: 10px; }
+  ic { background: #f0f0f0; border-radius: 4px; padding: 1px 6px; font-size: 11px; color: #c0392b; font-family: monospace; }
+
+  /* Pills */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .pill { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .pill-blue   { background: #e0eaff; color: #1d4ed8; }
+  .pill-green  { background: #dcfce7; color: #15803d; }
+  .pill-amber  { background: #fef3c7; color: #92400e; }
+  .pill-purple { background: #f3e8ff; color: #7e22ce; }
+  .pill-slate  { background: #f1f5f9; color: #475569; }
+
+  /* Architecture row */
+  .arch-row { display: flex; align-items: center; gap: 0; margin-bottom: 16px; }
+  .arch-box {
+    flex: 1;
+    background: #f7f8fa;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .arch-box .albl { font-size: 11px; font-weight: 700; color: #57606a; text-transform: uppercase; letter-spacing: 0.8px; }
+  .arch-box .aname { font-size: 15px; font-weight: 700; color: #1f2328; margin-top: 2px; }
+  .arch-box .asub  { font-size: 11px; color: #8b949e; margin-top: 2px; }
+  .arch-box.blue   { background: #e0eaff; border-color: #93c5fd; }
+  .arch-box.green  { background: #dcfce7; border-color: #86efac; }
+  .arch-box.amber  { background: #fef3c7; border-color: #fcd34d; }
+  .arrow { font-size: 18px; color: #8b949e; padding: 0 10px; flex-shrink: 0; }
+
+  /* DB grid */
+  .db-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .db-table { border: 1.5px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+  .db-table-head { background: #1e3a5f; color: #fff; font-size: 12px; font-weight: 700; padding: 8px 12px; letter-spacing: 0.5px; }
+  .db-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 12px; border-top: 1px solid #f0f0f0; color: #374151; }
+  .db-row:nth-child(even) { background: #fafafa; }
+  .col-type { color: #8b949e; font-style: italic; }
+  .pk { color: #d97706; font-weight: 700; margin-right: 3px; }
+  .fk { color: #7c5cd8; font-weight: 700; margin-right: 3px; }
+
+  /* Flow */
+  .flow { display: flex; flex-direction: column; gap: 4px; }
+  .flow-step { display: flex; align-items: flex-start; gap: 14px; padding: 12px 16px; border-radius: 10px; background: #f7f8fa; border: 1.5px solid #e5e7eb; }
+  .flow-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+  .flow-body .ftitle { font-size: 13px; font-weight: 700; color: #1f2328; }
+  .flow-body .fdesc  { font-size: 12px; color: #57606a; margin-top: 2px; }
+  .flow-body ic      { background: #f0f0f0; border-radius: 4px; padding: 1px 6px; font-size: 11px; color: #c0392b; font-family: monospace; }
+  .flow-arr { text-align: center; color: #8b949e; font-size: 14px; }
+
+  /* Code */
+  .code-block { background: #0d1117; border-radius: 10px; padding: 16px 20px; font-family: "Courier New", monospace; font-size: 12px; line-height: 1.7; color: #e6edf3; margin-top: 12px; white-space: pre; }
+  .kw  { color: #ff7b72; }
+  .cl  { color: #79c0ff; }
+  .an  { color: #f0883e; }
+  .cm  { color: #8b949e; }
+  .st  { color: #a5d6ff; }
+  .lbl { color: #7ee787; }
+
+  /* API table */
+  .api-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 8px; }
+  .api-table th { background: #1e3a5f; color: #fff; font-weight: 600; padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .api-table td { padding: 7px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  .api-table tr:nth-child(even) td { background: #fafafa; }
+  .method { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; font-family: monospace; min-width: 44px; text-align: center; }
+  .get    { background: #dcfce7; color: #15803d; }
+  .post   { background: #dbeafe; color: #1d4ed8; }
+  .put    { background: #fef3c7; color: #92400e; }
+  .del    { background: #fee2e2; color: #b91c1c; }
+  .pub    { color: #15803d; font-size: 11px; font-weight: 600; }
+  .priv   { color: #d97706; font-size: 11px; font-weight: 600; }
+
+  /* Summary */
+  .sum-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .sum-card { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 16px; text-align: center; }
+  .sum-card .num { font-size: 28px; font-weight: 800; color: #1e3a5f; }
+  .sum-card .lbl { font-size: 11px; color: #57606a; margin-top: 2px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: #8b949e; border-top: 1px solid #e5e7eb; }
+
+  @media print {
+    body { background: #fff; }
+    .page { max-width: 100%; }
+    section { page-break-inside: avoid; }
+    .cover { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+
+<div class="cover">
+  <div class="cover-badge">IBM BOB · Capstone Project</div>
+  <h1>E-Bookstore Platform</h1>
+  <p>A full-stack online bookstore built with AI-assisted development — React, Spring Boot, and PostgreSQL.</p>
+  <div class="cover-stack">
+    <span class="tag">React 18</span>
+    <span class="tag">Spring Boot 3.2</span>
+    <span class="tag">PostgreSQL 18</span>
+    <span class="tag">JWT Auth</span>
+    <span class="tag">Flyway Migrations</span>
+    <span class="tag">TailwindCSS</span>
+    <span class="tag">OpenAPI 3.0</span>
+  </div>
+</div>
+
+
+<section>
+  <div class="section-num">Section 01</div>
+  <h2>System Architecture</h2>
+  <p>Three-tier architecture: a React frontend talks to a Spring Boot REST API, which persists all data to PostgreSQL via JPA and Flyway.</p>
+
+  <div class="arch-row">
+    <div class="arch-box blue">
+      <div class="albl">Browser</div>
+      <div class="aname">React + Vite</div>
+      <div class="asub">Port 5173 · TailwindCSS</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="arch-box amber">
+      <div class="albl">API Layer</div>
+      <div class="aname">Spring Boot</div>
+      <div class="asub">Port 8080 · REST + JWT</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="arch-box green">
+      <div class="albl">Database</div>
+      <div class="aname">PostgreSQL</div>
+      <div class="asub">Port 5432 · 8 tables</div>
+    </div>
+  </div>
+
+  <h3>Key Design Decisions</h3>
+  <div class="pills">
+    <span class="pill pill-blue">Stateless JWT — no server-side session</span>
+    <span class="pill pill-green">Vite proxy — no CORS issues in dev</span>
+    <span class="pill pill-amber">Flyway — versioned DB migrations</span>
+    <span class="pill pill-purple">Spring Security filter chain</span>
+    <span class="pill pill-slate">H2 in-memory DB for tests only</span>
+  </div>
+
+  <h3>Frontend to Backend Communication</h3>
+  <p>All API calls use Axios with base URL /api. Vite's dev proxy forwards every /api/* request to http://127.0.0.1:8080. The JWT token is automatically attached from localStorage via an Axios request interceptor on every call.</p>
+</section>
+
+
+<section>
+  <div class="section-num">Section 02</div>
+  <h2>Where Data is Stored</h2>
+  <p>All data lives in <strong>PostgreSQL</strong>. The schema is created and versioned by <strong>Flyway</strong> — SQL migration files run automatically on startup. There are 8 tables with clear foreign-key relationships.</p>
+
+  <div class="db-grid">
+    <div class="db-table">
+      <div class="db-table-head">users</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span>full_name</span><span class="col-type">varchar(100)</span></div>
+      <div class="db-row"><span>email (unique)</span><span class="col-type">varchar(150)</span></div>
+      <div class="db-row"><span>password_hash</span><span class="col-type">BCrypt hash</span></div>
+      <div class="db-row"><span>gift_points</span><span class="col-type">integer</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head">products</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span>title, author</span><span class="col-type">varchar</span></div>
+      <div class="db-row"><span>price</span><span class="col-type">numeric(10,2)</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>category_id</span><span class="col-type">→ categories</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>brand_id</span><span class="col-type">→ brands</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head">orders</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>user_id</span><span class="col-type">→ users</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>address_id</span><span class="col-type">→ addresses</span></div>
+      <div class="db-row"><span>status</span><span class="col-type">PENDING / CONFIRMED…</span></div>
+      <div class="db-row"><span>total_amount</span><span class="col-type">numeric(10,2)</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head">cart_items</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>user_id</span><span class="col-type">→ users</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>product_id</span><span class="col-type">→ products</span></div>
+      <div class="db-row"><span>quantity</span><span class="col-type">integer</span></div>
+      <div class="db-row"><span>unique(user_id, product_id)</span><span class="col-type">constraint</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head">order_items</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>order_id</span><span class="col-type">→ orders</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>product_id</span><span class="col-type">→ products</span></div>
+      <div class="db-row"><span>unit_price, subtotal</span><span class="col-type">numeric(10,2)</span></div>
+      <div class="db-row"><span>quantity</span><span class="col-type">integer</span></div>
+    </div>
+    <div class="db-table">
+      <div class="db-table-head">reviews</div>
+      <div class="db-row"><span><span class="pk">PK</span>id</span><span class="col-type">bigserial</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>user_id</span><span class="col-type">→ users</span></div>
+      <div class="db-row"><span><span class="fk">FK</span>product_id</span><span class="col-type">→ products</span></div>
+      <div class="db-row"><span>rating</span><span class="col-type">1–5 check constraint</span></div>
+      <div class="db-row"><span>unique(user_id, product_id)</span><span class="col-type">one review per user</span></div>
+    </div>
+  </div>
+
+  <h3>Flyway Migration Files</h3>
+  <div class="pills" style="margin-top:10px">
+    <span class="pill pill-blue">V1__init_schema.sql — creates all 8 tables</span>
+    <span class="pill pill-green">V2__seed_data.sql — 12 books, 4 categories, 3 publishers</span>
+    <span class="pill pill-amber">V3__book_images.sql — cover image URLs from Open Library</span>
+  </div>
+  <p>Flyway tracks every migration in a flyway_schema_history table. On every app startup it checks checksums — if a file changed it refuses to start, preventing silent schema drift in production.</p>
+</section>
+
+
+<section>
+  <div class="section-num">Section 03</div>
+  <h2>How Authentication Works</h2>
+  <p>The app uses <strong>stateless JWT (JSON Web Token)</strong> via Spring Security. No sessions are stored server-side — every request proves its identity by carrying a signed token in the HTTP header.</p>
+
+  <h3>Step-by-Step Login Flow</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num" style="background:#e0eaff;color:#1d4ed8">1</div>
+      <div class="flow-body">
+        <div class="ftitle">User submits credentials</div>
+        <div class="fdesc">Frontend sends POST /api/auth/login with email + password (plain text, encrypted in transit).</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#dcfce7;color:#15803d">2</div>
+      <div class="flow-body">
+        <div class="ftitle">BCrypt password verification</div>
+        <div class="fdesc">Spring's BCryptPasswordEncoder compares the submitted password against the stored hash. Plain text password is never stored.</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#fef3c7;color:#92400e">3</div>
+      <div class="flow-body">
+        <div class="ftitle">JWT token generated and returned</div>
+        <div class="fdesc">JwtUtil.generateToken() creates a token with the user's email as subject, signed with <strong>HMAC-SHA-512</strong>, expiry <strong>24 hours</strong>. Returned to the browser.</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#f3e8ff;color:#7e22ce">4</div>
+      <div class="flow-body">
+        <div class="ftitle">Token stored in localStorage</div>
+        <div class="fdesc">Frontend stores the JWT. An Axios interceptor attaches it automatically as Authorization: Bearer &lt;token&gt; on every subsequent request.</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#f1f5f9;color:#475569">5</div>
+      <div class="flow-body">
+        <div class="ftitle">JwtAuthenticationFilter validates every request</div>
+        <div class="fdesc">Before any controller runs, the filter reads the token, verifies the signature, checks expiry, loads the user, and sets the Spring SecurityContext. If invalid — request is rejected with 401.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block"><span class="cm">// JwtAuthenticationFilter — runs on every HTTP request</span>
+<span class="an">@Override</span>
+<span class="kw">protected void</span> <span class="lbl">doFilterInternal</span>(request, response, chain) {
+  String header = request.getHeader(<span class="st">"Authorization"</span>);
+  <span class="kw">if</span> (header == <span class="kw">null</span> || !header.startsWith(<span class="st">"Bearer "</span>)) {
+    chain.doFilter(request, response); <span class="cm">// no token — pass through</span>
+    <span class="kw">return</span>;
+  }
+  String jwt = header.substring(7);
+  String email = jwtUtil.extractUsername(jwt); <span class="cm">// verify signature</span>
+  UserDetails user = userDetailsService.loadUserByUsername(email);
+  <span class="kw">if</span> (jwtUtil.isTokenValid(jwt, user)) {
+    SecurityContextHolder.getContext()
+      .setAuthentication(<span class="kw">new</span> UsernamePasswordAuthenticationToken(...));
+  }
+  chain.doFilter(request, response);
+}</div>
+
+  <h3 style="margin-top:20px">Public vs Protected Routes</h3>
+  <table class="api-table">
+    <thead><tr><th>Route</th><th>Access</th></tr></thead>
+    <tbody>
+      <tr><td>/api/auth/register, /api/auth/login</td><td><span class="pub">Public</span></td></tr>
+      <tr><td>GET /api/products/**, /api/categories/**, /api/brands/**</td><td><span class="pub">Public</span></td></tr>
+      <tr><td>/swagger-ui/**, /v3/api-docs/**</td><td><span class="pub">Public</span></td></tr>
+      <tr><td>Cart, Orders, Addresses, Profile, Reviews (POST)</td><td><span class="priv">🔒 JWT Required</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section>
+  <div class="section-num">Section 04</div>
+  <h2>API and Controller Flow</h2>
+  <p>Every feature follows the same <strong>Controller → Service → Repository</strong> pattern. The controller handles HTTP, the service owns business logic, the repository talks to PostgreSQL via Spring Data JPA.</p>
+
+  <h3>Example: Browse Products Request</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num" style="background:#e0eaff;color:#1d4ed8">1</div>
+      <div class="flow-body">
+        <div class="ftitle">Browser sends GET request</div>
+        <div class="fdesc">GET /api/products?categoryId=2&amp;sort=price_asc&amp;page=0&amp;size=12</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#dcfce7;color:#15803d">2</div>
+      <div class="flow-body">
+        <div class="ftitle">Spring Security validates (public route — passes through)</div>
+        <div class="fdesc">No token needed for product browsing. Filter passes the request straight to the controller.</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#fef3c7;color:#92400e">3</div>
+      <div class="flow-body">
+        <div class="ftitle">ProductController receives request</div>
+        <div class="fdesc">Spring MVC binds query params. Calls productService.getProducts(categoryId, sort, page, size).</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#f3e8ff;color:#7e22ce">4</div>
+      <div class="flow-body">
+        <div class="ftitle">ProductService builds a JPA Specification</div>
+        <div class="fdesc">Dynamic filters (category, brand, search, price range) are combined into a Specification. Passed to the repository with a Pageable (page + sort).</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#f1f5f9;color:#475569">5</div>
+      <div class="flow-body">
+        <div class="ftitle">Repository queries PostgreSQL</div>
+        <div class="fdesc">Hibernate translates the Specification into SQL: SELECT * FROM products WHERE category_id=2 ORDER BY price ASC LIMIT 12 OFFSET 0</div>
+      </div>
+    </div>
+    <div class="flow-arr">↓</div>
+    <div class="flow-step">
+      <div class="flow-num" style="background:#e0eaff;color:#1d4ed8">6</div>
+      <div class="flow-body">
+        <div class="ftitle">DTO mapped and returned as JSON</div>
+        <div class="fdesc">Entities are mapped to ProductSummaryResponse records — no internal fields exposed. Response: { content: [...], totalElements: 12, totalPages: 1 }</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:20px">Full API Reference</h3>
+  <table class="api-table">
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th><th>Auth</th></tr></thead>
+    <tbody>
+      <tr><td><span class="method post">POST</span></td><td>/api/auth/register</td><td>Register, returns JWT</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method post">POST</span></td><td>/api/auth/login</td><td>Login, returns JWT</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/auth/me</td><td>Get current user profile</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method put">PUT</span></td><td>/api/auth/me</td><td>Update name / phone</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/products</td><td>List products — filter, sort, paginate</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/products/:id</td><td>Single product detail</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/products/:id/related</td><td>Related books (same category)</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/products/featured</td><td>Top 8 by rating</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/categories</td><td>All categories</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/brands</td><td>All publishers</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/cart</td><td>Get cart with totals</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method post">POST</span></td><td>/api/cart</td><td>Add item to cart</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method put">PUT</span></td><td>/api/cart/:id</td><td>Update item quantity</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method del">DEL</span></td><td>/api/cart/:id</td><td>Remove cart item</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method post">POST</span></td><td>/api/orders</td><td>Place order (clears cart)</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/orders</td><td>Order history (paginated)</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/orders/:id</td><td>Order detail with items</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method put">PUT</span></td><td>/api/orders/:id/cancel</td><td>Cancel order (within 48 hrs)</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/addresses</td><td>Saved addresses</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method post">POST</span></td><td>/api/addresses</td><td>Add address</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method put">PUT</span></td><td>/api/addresses/:id</td><td>Update address</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method del">DEL</span></td><td>/api/addresses/:id</td><td>Delete address</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/recommendations</td><td>Personalised recommendations</td><td><span class="priv">🔒</span></td></tr>
+      <tr><td><span class="method get">GET</span></td><td>/api/reviews/product/:id</td><td>Product reviews</td><td><span class="pub">Public</span></td></tr>
+      <tr><td><span class="method post">POST</span></td><td>/api/reviews</td><td>Submit a review</td><td><span class="priv">🔒</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section>
+  <div class="section-num">Section 05</div>
+  <h2>Project Summary</h2>
+
+  <div class="sum-grid">
+    <div class="sum-card"><div class="num">32</div><div class="lbl">Passing Tests</div></div>
+    <div class="sum-card"><div class="num">25</div><div class="lbl">API Endpoints</div></div>
+    <div class="sum-card"><div class="num">11</div><div class="lbl">UI Pages</div></div>
+    <div class="sum-card"><div class="num">8</div><div class="lbl">DB Tables</div></div>
+    <div class="sum-card"><div class="num">12</div><div class="lbl">Seeded Books</div></div>
+    <div class="sum-card"><div class="num">~124</div><div class="lbl">Source Files</div></div>
+  </div>
+
+  <h3>Pages Built</h3>
+  <div class="pills">
+    <span class="pill pill-blue">Home — hero, categories, featured, recommendations</span>
+    <span class="pill pill-blue">Catalogue — search, filter, sort, pagination</span>
+    <span class="pill pill-blue">Product Detail — image, delivery date, add to cart, reviews</span>
+    <span class="pill pill-green">Cart — qty stepper, remove, order summary</span>
+    <span class="pill pill-green">Checkout — address pick / add new, 3-step progress</span>
+    <span class="pill pill-green">Payment — credit/debit card or gift points</span>
+    <span class="pill pill-amber">Order Confirmation — receipt, gift points earned</span>
+    <span class="pill pill-amber">Order History — expand, Buy Again, cancel within 48 hrs</span>
+    <span class="pill pill-purple">Profile — edit info, address book, gift points</span>
+    <span class="pill pill-slate">Login / Register — JWT auth forms</span>
+  </div>
+
+  <h3>Key Business Rules</h3>
+  <div class="pills">
+    <span class="pill pill-amber">Gift Points: earn 1pt per $1 spent · 100pts = $1 off · max 20% discount</span>
+    <span class="pill pill-blue">Free shipping on orders over $30</span>
+    <span class="pill pill-green">Cancel within 48 hours if status is PENDING or CONFIRMED</span>
+    <span class="pill pill-purple">Recommendations based on categories bought in past orders</span>
+    <span class="pill pill-slate">Estimated delivery date on product page and confirmation</span>
+  </div>
+</section>
+
+<div class="footer">Made with IBM Bob  ·  E-Bookstore Capstone Project</div>
+</div>
+</body>
+</html>
