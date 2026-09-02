@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { loginUser } from '../api/auth'
 import { useAuth } from '../context/AuthContext'
-import { BookOpen, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight } from 'lucide-react'
+import LavalLogo from '../components/LavalLogo'
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -43,9 +44,10 @@ export default function LoginPage() {
         <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-brand-400/30 blur-3xl" />
         <div className="relative text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center mx-auto mb-8">
-            <BookOpen size={32} className="text-white" />
+            <LavalLogo size={36} />
           </div>
-          <h2 className="text-3xl font-black mb-3">BookStore</h2>
+          <h2 className="text-3xl font-black mb-1">Laval Books</h2>
+          <p className="text-brand-300 text-xs tracking-widest uppercase mb-3">Valley of Books</p>
           <p className="text-indigo-200 text-base max-w-xs leading-relaxed">
             Your gateway to thousands of books. Sign in to continue your reading journey.
           </p>
@@ -64,10 +66,13 @@ export default function LoginPage() {
         <div className="w-full max-w-md page-enter">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
-              <BookOpen size={16} className="text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
+              <LavalLogo size={26} />
             </div>
-            <span className="font-bold text-lg gradient-text">BookStore</span>
+            <div className="leading-tight">
+              <span className="font-black text-base gradient-text tracking-tight">Laval Books</span>
+              <span className="block text-[9px] text-gray-400 tracking-widest uppercase -mt-0.5">Valley of Books</span>
+            </div>
           </div>
 
           <h1 className="text-3xl font-black text-gray-900 mb-1">Welcome back</h1>

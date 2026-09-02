@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, Mail, Phone, Clock, Heart } from 'lucide-react'
+import { Mail, Phone, Clock, Heart } from 'lucide-react'
+import LavalLogo from './LavalLogo'
 
 export default function Footer() {
   return (
@@ -12,10 +13,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
-                <BookOpen size={16} className="text-white" />
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
+                <LavalLogo size={28} />
               </div>
-              <span className="font-bold text-white text-lg">BookStore</span>
+              <div className="leading-tight">
+                <span className="font-black text-white text-base tracking-tight">Laval Books</span>
+                <span className="block text-[9px] text-brand-400 font-medium tracking-widest uppercase -mt-0.5">Valley of Books</span>
+              </div>
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               Your destination for the best books across all genres. Discover, read, and grow with every page.
@@ -61,7 +65,7 @@ export default function Footer() {
             © {new Date().getFullYear()} BookStore. All rights reserved.
           </p>
           <p className="text-xs text-gray-600 flex items-center gap-1">
-            Made with <Heart size={11} className="text-brand-500" /> using IBM BOB
+            Made with <Heart size={11} className="text-brand-500" /> for Laval Books · IBM BOB
           </p>
         </div>
       </div>

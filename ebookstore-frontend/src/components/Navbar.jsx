@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, BookOpen, Menu, X, User, ChevronDown, LogOut, Package, Search } from 'lucide-react'
+import { ShoppingCart, Menu, X, User, ChevronDown, LogOut, Package, Search } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import LavalLogo from './LavalLogo'
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth()
@@ -27,10 +28,13 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center shadow-md">
-              <BookOpen size={16} className="text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center shadow-md">
+              <LavalLogo size={28} />
             </div>
-            <span className="font-bold text-lg gradient-text">BookStore</span>
+            <div className="leading-tight">
+              <span className="font-black text-base gradient-text tracking-tight">Laval Books</span>
+              <span className="hidden sm:block text-[9px] text-gray-400 font-medium tracking-widest uppercase -mt-0.5">Valley of Books</span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
