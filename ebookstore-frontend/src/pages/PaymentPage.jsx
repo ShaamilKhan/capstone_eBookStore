@@ -59,13 +59,14 @@ export default function PaymentPage() {
   const items = cart?.items || []
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">Payment</h1>
+    <div className="max-w-5xl mx-auto px-4 py-10 page-enter">
+      <h1 className="text-2xl font-black text-gray-900 mb-2">Payment</h1>
+      <p className="text-gray-500 text-sm mb-8">Choose your payment method and place your order</p>
 
       {!addressId && (
-        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-800 text-sm">
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-2xl text-yellow-800 text-sm">
           ⚠️ No address selected. Please go back to{' '}
-          <a href="/checkout" className="underline font-medium">Checkout</a> and select a delivery address.
+          <a href="/checkout" className="underline font-semibold">Checkout</a> and select a delivery address.
         </div>
       )}
 
@@ -73,16 +74,16 @@ export default function PaymentPage() {
         {/* Payment method */}
         <div className="flex-1 space-y-5">
           {/* Tabs */}
-          <div className="flex gap-2 p-1 bg-gray-100 rounded-xl w-fit">
+          <div className="flex gap-2 p-1 bg-gray-100 rounded-2xl w-fit">
             {[
               { id: 'CREDIT_CARD', label: 'Credit Card' },
               { id: 'DEBIT_CARD',  label: 'Debit Card'  },
               { id: 'GIFT_POINTS', label: `Gift Points (${giftPoints} pts)` }
             ].map(m => (
               <button key={m.id} onClick={() => setMethod(m.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   method === m.id
-                    ? 'bg-white shadow text-indigo-600'
+                    ? 'bg-white shadow-sm text-brand-600'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}>
                 {m.label}
@@ -91,10 +92,11 @@ export default function PaymentPage() {
           </div>
 
           {(method === 'CREDIT_CARD' || method === 'DEBIT_CARD') && (
-            <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
-              <div className="flex items-center gap-2 text-gray-700 font-medium mb-2">
-                <CreditCard size={18} /> Card Details
+            <div className="card p-6 space-y-4 hover:translate-y-0">
+              <div className="flex items-center gap-2 text-gray-700 font-bold mb-1">
+                <CreditCard size={18} className="text-brand-500" /> Card Details
               </div>
+              <p className="text-gray-500 text-sm">Enter your card information securely</p>
               {[
                 { key: 'holderName',  label: 'Cardholder Name', placeholder: 'John Doe'             },
                 { key: 'cardNumber',  label: 'Card Number',      placeholder: '1234 5678 9012 3456'  },
@@ -102,12 +104,12 @@ export default function PaymentPage() {
                 { key: 'cardCvv',     label: 'CVV',              placeholder: '***'                  }
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">{label}</label>
                   <input
                     value={cardForm[key]}
                     onChange={e => setCardForm(f => ({ ...f, [key]: e.target.value }))}
                     placeholder={placeholder}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="input"
                   />
                 </div>
               ))}
@@ -115,16 +117,17 @@ export default function PaymentPage() {
           )}
 
           {method === 'GIFT_POINTS' && (
-            <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-3">
-              <div className="flex items-center gap-2 text-amber-600 font-medium">
+            <div className="card p-6 space-y-3 hover:translate-y-0">
+              <div className="flex items-center gap-2 text-amber-600 font-bold">
                 <Gift size={18} /> Gift Points Balance
               </div>
-              <p className="text-3xl font-bold text-gray-900">{giftPoints} <span className="text-lg font-normal text-gray-400">pts</span></p>
+              <p className="text-gray-500 text-sm">Redeem your earned points as a discount</p>
+              <p className="text-3xl font-black text-gray-900">{giftPoints} <span className="text-lg font-normal text-gray-400">pts</span></p>
               <p className="text-sm text-gray-500">100 pts = $1.00 discount</p>
               {giftPoints === 0 ? (
                 <p className="text-sm text-red-500">You have no gift points to use.</p>
               ) : (
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
                   Max discount on this order: <span className="font-bold">${maxDiscount.toFixed(2)}</span>
                   {' '}(20% of ${subtotal.toFixed(2)})
                 </div>
@@ -135,7 +138,7 @@ export default function PaymentPage() {
           <button
             onClick={handlePlace}
             disabled={placing || (method === 'GIFT_POINTS' && giftPoints === 0)}
-            className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-60 transition-colors text-lg"
+            className="btn-primary w-full py-3 text-base"
           >
             {placing ? 'Placing Order…' : `Place Order — $${finalTotal.toFixed(2)}`}
           </button>
@@ -143,8 +146,9 @@ export default function PaymentPage() {
 
         {/* Order summary sidebar */}
         <div className="w-full lg:w-72 flex-shrink-0">
-          <div className="bg-white border border-gray-200 rounded-xl p-5 sticky top-24">
-            <h3 className="font-bold text-gray-900 mb-4">Order Summary</h3>
+          <div className="card p-5 sticky top-24 hover:translate-y-0">
+            <h3 className="font-black text-gray-900 mb-1">Order Summary</h3>
+            <p className="text-gray-500 text-sm mb-4">Your items</p>
             <div className="space-y-2 mb-4">
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm text-gray-600">
@@ -153,7 +157,7 @@ export default function PaymentPage() {
                 </div>
               ))}
             </div>
-            <hr className="my-2" />
+            <hr className="border-gray-100 my-2" />
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>Subtotal</span>
               <span>${parseFloat(cart?.subtotal || 0).toFixed(2)}</span>
@@ -168,8 +172,8 @@ export default function PaymentPage() {
                 <span>-${maxDiscount.toFixed(2)}</span>
               </div>
             )}
-            <hr className="my-2" />
-            <div className="flex justify-between font-bold text-gray-900">
+            <hr className="border-gray-100 my-2" />
+            <div className="flex justify-between font-black text-gray-900">
               <span>Total</span>
               <span>${finalTotal.toFixed(2)}</span>
             </div>

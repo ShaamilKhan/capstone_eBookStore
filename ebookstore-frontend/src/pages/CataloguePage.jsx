@@ -3,19 +3,19 @@ import { useSearchParams } from 'react-router-dom'
 import { getProducts } from '../api/products'
 import { getCategories } from '../api/categories'
 import { getBrands } from '../api/brands'
-import { SlidersHorizontal, X } from 'lucide-react'
+import { SlidersHorizontal, X, BookOpen } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import Pagination from '../components/Pagination'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 function SkeletonCard() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse">
-      <div className="aspect-[3/4] bg-gray-200" />
+    <div className="card overflow-hidden animate-pulse">
+      <div className="aspect-[3/4] bg-gray-100 rounded-xl" />
       <div className="p-4 space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-3/4" />
-        <div className="h-3 bg-gray-200 rounded w-1/2" />
-        <div className="h-3 bg-gray-200 rounded w-1/4" />
+        <div className="h-3 bg-gray-100 rounded w-3/4" />
+        <div className="h-3 bg-gray-100 rounded w-1/2" />
+        <div className="h-3 bg-gray-100 rounded w-1/4" />
       </div>
     </div>
   )
@@ -92,23 +92,24 @@ export default function CataloguePage() {
     <aside className="space-y-6">
       {/* Search */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1">Search</label>
+        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Search</label>
         <input
           type="text" value={filters.search}
           onChange={e => setFilter('search', e.target.value)}
           placeholder="Title or author…"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="input"
         />
       </div>
       {/* Categories */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-        <div className="space-y-1">
+        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Category</label>
+        <div className="space-y-1.5">
           {categories.map(c => (
-            <label key={c.id} className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <label key={c.id} className="flex items-center gap-2.5 text-sm text-gray-600 cursor-pointer hover:text-brand-600 transition-colors">
               <input type="radio" name="category"
                 checked={filters.categoryId === String(c.id)}
                 onChange={() => setFilter('categoryId', filters.categoryId === String(c.id) ? '' : String(c.id))}
+                className="accent-brand-600"
               />
               {c.name}
             </label>
@@ -117,13 +118,14 @@ export default function CataloguePage() {
       </div>
       {/* Brands */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">Publisher</label>
-        <div className="space-y-1">
+        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Publisher</label>
+        <div className="space-y-1.5">
           {brands.map(b => (
-            <label key={b.id} className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <label key={b.id} className="flex items-center gap-2.5 text-sm text-gray-600 cursor-pointer hover:text-brand-600 transition-colors">
               <input type="radio" name="brand"
                 checked={filters.brandId === String(b.id)}
                 onChange={() => setFilter('brandId', filters.brandId === String(b.id) ? '' : String(b.id))}
+                className="accent-brand-600"
               />
               {b.name}
             </label>
@@ -132,39 +134,38 @@ export default function CataloguePage() {
       </div>
       {/* Price */}
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">Price Range</label>
+        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Price Range</label>
         <div className="flex gap-2">
           <input type="number" placeholder="Min" value={filters.minPrice}
             onChange={e => setFilter('minPrice', e.target.value)}
-            className="w-1/2 border border-gray-300 rounded-lg px-2 py-1.5 text-sm" />
+            className="input" style={{ padding: '0.375rem 0.5rem' }} />
           <input type="number" placeholder="Max" value={filters.maxPrice}
             onChange={e => setFilter('maxPrice', e.target.value)}
-            className="w-1/2 border border-gray-300 rounded-lg px-2 py-1.5 text-sm" />
+            className="input" style={{ padding: '0.375rem 0.5rem' }} />
         </div>
       </div>
-      <button onClick={clearFilters}
-        className="w-full text-sm text-indigo-600 border border-indigo-300 rounded-lg py-2 hover:bg-indigo-50 transition-colors">
+      <button onClick={clearFilters} className="btn-ghost w-full">
         Clear Filters
       </button>
     </aside>
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 page-enter">
       {/* Mobile filter toggle */}
       <div className="flex items-center justify-between mb-6 lg:hidden">
-        <h1 className="text-xl font-bold text-gray-900">Catalogue</h1>
+        <h1 className="text-xl font-black text-gray-900">Catalogue</h1>
         <button onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="flex items-center gap-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700">
+          className="btn-ghost gap-1 text-sm py-2 px-3">
           <SlidersHorizontal size={16} /> Filters
         </button>
       </div>
 
       {sidebarOpen && (
-        <div className="lg:hidden mb-6 p-4 bg-white border border-gray-200 rounded-xl shadow">
+        <div className="lg:hidden mb-6 p-5 card">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Filters</h3>
-            <button onClick={() => setSidebarOpen(false)}><X size={18} /></button>
+            <h3 className="font-bold text-gray-900">Filters</h3>
+            <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
           </div>
           <Sidebar />
         </div>
@@ -173,18 +174,23 @@ export default function CataloguePage() {
       <div className="flex gap-8">
         {/* Desktop sidebar */}
         <div className="hidden lg:block w-60 flex-shrink-0">
-          <Sidebar />
+          <div className="card p-5">
+            <h2 className="font-black text-gray-900 mb-5">Filters</h2>
+            <Sidebar />
+          </div>
         </div>
 
         {/* Product grid */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-gray-500">
-              Showing <span className="font-medium text-gray-900">{products.length}</span> of{' '}
-              <span className="font-medium text-gray-900">{total}</span> books
-            </p>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <p className="text-sm text-gray-500">
+                Showing <span className="font-semibold text-gray-900">{products.length}</span> of{' '}
+                <span className="font-semibold text-gray-900">{total}</span> books
+              </p>
+            </div>
             <select value={filters.sort} onChange={e => setFilter('sort', e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none">
+              className="input" style={{ width: 'auto', paddingTop: '0.375rem', paddingBottom: '0.375rem' }}>
               <option value="relevance">Relevance</option>
               <option value="price_asc">Price: Low to High</option>
               <option value="price_desc">Price: High to Low</option>
@@ -197,9 +203,12 @@ export default function CataloguePage() {
               {Array.from({ length: 12 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20 text-gray-400">
-              <p className="text-lg font-medium">No books found</p>
-              <p className="text-sm mt-1">Try adjusting your filters</p>
+            <div className="text-center py-24">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-100 to-violet-100 flex items-center justify-center mx-auto mb-4">
+                <BookOpen size={32} className="text-brand-400" />
+              </div>
+              <p className="text-lg font-bold text-gray-700">No books found</p>
+              <p className="text-sm text-gray-400 mt-1">Try adjusting your filters or search terms</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">

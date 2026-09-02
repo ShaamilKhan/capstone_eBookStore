@@ -2,30 +2,26 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerUser } from '../api/auth'
 import { useAuth } from '../context/AuthContext'
+import { BookOpen, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function RegisterPage() {
   const { login } = useAuth()
   const navigate  = useNavigate()
-  const [form, setForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '', phone: '' })
+  const [form, setForm]       = useState({ fullName: '', email: '', password: '', confirmPassword: '', phone: '' })
   const [loading, setLoading] = useState(false)
+  const [showPw, setShowPw]   = useState(false)
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (form.password !== form.confirmPassword) {
-      return toast.error('Passwords do not match')
-    }
-    if (form.password.length < 8) {
-      return toast.error('Password must be at least 8 characters')
-    }
+    if (form.password !== form.confirmPassword) return toast.error('Passwords do not match')
+    if (form.password.length < 8) return toast.error('Password must be at least 8 characters')
     setLoading(true)
     try {
       const res = await registerUser({ fullName: form.fullName, email: form.email, password: form.password, phone: form.phone })
-      login(res.data.token, {
-        id: res.data.id, fullName: res.data.fullName, email: res.data.email, giftPoints: res.data.giftPoints
-      })
+      login(res.data.token, { id: res.data.id, fullName: res.data.fullName, email: res.data.email, giftPoints: res.data.giftPoints })
       toast.success('Account created!')
       navigate('/')
     } catch (err) {
@@ -36,40 +32,90 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Create account</h1>
-        <p className="text-gray-500 text-sm mb-6">Join BookStore today</p>
+    <div className="min-h-screen flex">
+      {/* Left panel */}
+      <div className="hidden lg:flex lg:w-1/2 bg-hero-gradient relative overflow-hidden flex-col justify-center items-center p-12 text-white">
+        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-violet-600/30 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-brand-400/30 blur-3xl" />
+        <div className="relative text-center">
+          <div className="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center mx-auto mb-8">
+            <BookOpen size={32} className="text-white" />
+          </div>
+          <h2 className="text-3xl font-black mb-3">Join BookStore</h2>
+          <p className="text-indigo-200 text-base max-w-xs leading-relaxed">
+            Create a free account and start exploring thousands of great books today.
+          </p>
+          <div className="mt-10 grid grid-cols-1 gap-3 text-left max-w-xs mx-auto">
+            {['Free to join', 'Earn gift points on every order', 'Personalised recommendations', 'Cancel orders within 48 hours'].map(f => (
+              <div key={f} className="flex items-start gap-2 text-xs text-indigo-200">
+                <span className="text-green-400 font-bold mt-0.5">✓</span> {f}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: 'Full Name', name: 'fullName', type: 'text' },
-            { label: 'Email', name: 'email', type: 'email' },
-            { label: 'Phone (optional)', name: 'phone', type: 'tel', required: false },
-            { label: 'Password', name: 'password', type: 'password' },
-            { label: 'Confirm Password', name: 'confirmPassword', type: 'password' }
-          ].map(({ label, name, type, required = true }) => (
-            <div key={name}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-              <input
-                name={name} type={type} required={required}
-                value={form[name]} onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+      {/* Right panel */}
+      <div className="flex-1 flex items-center justify-center p-6 bg-surface overflow-y-auto">
+        <div className="w-full max-w-md py-8 page-enter">
+          <div className="flex items-center gap-2 mb-8 lg:hidden">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-600 to-violet-600 flex items-center justify-center">
+              <BookOpen size={16} className="text-white" />
             </div>
-          ))}
-          <button
-            type="submit" disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-60 transition-colors"
-          >
-            {loading ? 'Creating account…' : 'Create Account'}
-          </button>
-        </form>
+            <span className="font-bold text-lg gradient-text">BookStore</span>
+          </div>
 
-        <p className="mt-5 text-center text-sm text-gray-500">
-          Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 font-medium hover:underline">Sign in</Link>
-        </p>
+          <h1 className="text-3xl font-black text-gray-900 mb-1">Create account</h1>
+          <p className="text-gray-500 text-sm mb-8">Join thousands of readers today — it's free</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {[
+              { label: 'Full Name',         name: 'fullName',       type: 'text',     placeholder: 'Jane Doe',          required: true },
+              { label: 'Email',             name: 'email',          type: 'email',    placeholder: 'you@example.com',   required: true },
+              { label: 'Phone (optional)',  name: 'phone',          type: 'tel',      placeholder: '+1 555 000 0000',   required: false },
+            ].map(({ label, name, type, placeholder, required }) => (
+              <div key={name}>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">{label}</label>
+                <input name={name} type={type} required={required}
+                  value={form[name]} onChange={handleChange}
+                  placeholder={placeholder} className="input" />
+              </div>
+            ))}
+
+            {/* Password with toggle */}
+            {[
+              { label: 'Password',         name: 'password',        placeholder: 'At least 8 characters' },
+              { label: 'Confirm Password', name: 'confirmPassword', placeholder: 'Repeat password' },
+            ].map(({ label, name, placeholder }) => (
+              <div key={name}>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">{label}</label>
+                <div className="relative">
+                  <input name={name} type={showPw ? 'text' : 'password'} required
+                    value={form[name]} onChange={handleChange}
+                    placeholder={placeholder} className="input pr-10" />
+                  {name === 'password' && (
+                    <button type="button" onClick={() => setShowPw(!showPw)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-base mt-2">
+              {loading
+                ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Creating account…</span>
+                : <span className="flex items-center gap-2">Create Account <ArrowRight size={16} /></span>
+              }
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-500">
+            Already have an account?{' '}
+            <Link to="/login" className="text-brand-600 font-semibold hover:underline">Sign in</Link>
+          </p>
+        </div>
       </div>
     </div>
   )

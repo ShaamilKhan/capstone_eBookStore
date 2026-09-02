@@ -33,7 +33,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+          <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
           <Routes>
             <Route path="/"          element={<Layout><HomePage /></Layout>} />
             <Route path="/login"     element={<LoginPage />} />

@@ -11,7 +11,7 @@ export default function StarRating({ rating = 0, size = 'md', showValue = false 
                : 'empty'
     stars.push(
       <span key={i} className="relative inline-block" style={{ width: px, height: px }}>
-        <Star size={px} className="text-gray-300" fill="currentColor" />
+        <Star size={px} className="text-amber-200" fill="currentColor" />
         {fill !== 'empty' && (
           <span
             className="absolute inset-0 overflow-hidden text-amber-400"
@@ -25,9 +25,9 @@ export default function StarRating({ rating = 0, size = 'md', showValue = false 
   }
 
   return (
-    <span className="flex items-center gap-1">
+    <span className="flex items-center gap-0.5">
       {stars}
-      {showValue && <span className="text-sm text-gray-500 ml-1">{Number(rating).toFixed(1)}</span>}
+      {showValue && <span className="text-sm text-gray-500 ml-1.5 font-medium">{Number(rating).toFixed(1)}</span>}
     </span>
   )
 }
