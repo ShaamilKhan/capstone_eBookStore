@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "E-Bookstore API",
+    "_postman_id": "ebookstore-capstone-2024",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token",   "value": "" }
+  ],
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/register" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fullName\":\"Jane Doe\",\"email\":\"jane@example.com\",\"password\":\"password123\",\"phone\":\"+1-555-0100\"}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.environment.set('token', pm.response.json().token)"], "type": "text/javascript" } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"jane@example.com\",\"password\":\"password123\"}"
+            }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/me" }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/me" },
+            "body": { "mode": "raw", "raw": "{\"fullName\":\"Jane Updated\",\"phone\":\"+1-555-9999\"}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CATEGORIES",
+      "item": [
+        { "name": "Get All Categories", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/categories" } } },
+        { "name": "Get Category by ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/categories/1" } } }
+      ]
+    },
+    {
+      "name": "BRANDS",
+      "item": [
+        { "name": "Get All Brands", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/brands" } } },
+        { "name": "Get Brand by ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/brands/1" } } }
+      ]
+    },
+    {
+      "name": "PRODUCTS",
+      "item": [
+        { "name": "Get All Products",           "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products" } } },
+        { "name": "Get Products by Category",   "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products?categoryId=1" } } },
+        { "name": "Get Products with Search",   "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products?search=clean" } } },
+        { "name": "Get Featured Products",      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products/featured" } } },
+        { "name": "Get Product by ID",          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products/1" } } },
+        { "name": "Get Related Products",       "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/products/1/related" } } }
+      ]
+    },
+    {
+      "name": "CART",
+      "item": [
+        {
+          "name": "Get Cart",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/cart" } }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/cart/items" },
+            "body": { "mode": "raw", "raw": "{\"productId\":1,\"quantity\":2}" }
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/cart/items/1" },
+            "body": { "mode": "raw", "raw": "{\"quantity\":3}" }
+          }
+        },
+        {
+          "name": "Remove Cart Item",
+          "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/cart/items/1" } }
+        },
+        {
+          "name": "Clear Cart",
+          "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/cart" } }
+        }
+      ]
+    },
+    {
+      "name": "ADDRESSES",
+      "item": [
+        { "name": "Get Addresses", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/addresses" } } },
+        {
+          "name": "Add Address",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/addresses" },
+            "body": { "mode": "raw", "raw": "{\"label\":\"Home\",\"street\":\"123 Main St\",\"city\":\"New York\",\"state\":\"NY\",\"zipCode\":\"10001\",\"country\":\"USA\",\"isDefault\":true}" }
+          }
+        },
+        {
+          "name": "Update Address",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/addresses/1" },
+            "body": { "mode": "raw", "raw": "{\"label\":\"Office\",\"street\":\"456 Work Ave\",\"city\":\"New York\",\"state\":\"NY\",\"zipCode\":\"10002\",\"country\":\"USA\"}" }
+          }
+        },
+        { "name": "Delete Address",      "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/addresses/1" } } },
+        { "name": "Set Default Address", "request": { "method": "PUT",    "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/addresses/1/default" } } }
+      ]
+    },
+    {
+      "name": "ORDERS",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders" },
+            "body": { "mode": "raw", "raw": "{\"addressId\":1,\"paymentMethod\":\"CREDIT_CARD\",\"useGiftPoints\":false,\"cardNumber\":\"4111111111111111\",\"cardExpiry\":\"12/26\",\"cardCvv\":\"123\"}" }
+          }
+        },
+        { "name": "Get Order History", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/orders" } } },
+        { "name": "Get Order by ID",   "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/orders/1" } } },
+        { "name": "Cancel Order",      "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/orders/1/cancel" } } }
+      ]
+    },
+    {
+      "name": "REVIEWS",
+      "item": [
+        {
+          "name": "Create Review (auth)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/reviews" },
+            "body": { "mode": "raw", "raw": "{\"productId\":1,\"rating\":5,\"comment\":\"Great book!\"}" }
+          }
+        },
+        { "name": "Get Product Reviews (public)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/reviews/product/1" } } }
+      ]
+    },
+    {
+      "name": "RECOMMENDATIONS",
+      "item": [
+        { "name": "Get Recommendations", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/recommendations" } } }
+      ]
+    }
+  ]
+}
